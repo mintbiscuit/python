@@ -1,4 +1,4 @@
 python
 ======
 
-These are code samples and scripts using Python
+This section includes coding samples and scripts I have created using Python.
