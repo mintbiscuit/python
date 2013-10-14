@@ -1,0 +1,68 @@
+
+###########################################################
+#    This will return the files in a directory that       #
+#    fit a specified file extension based on a user's     #
+#    input. Then it will search the files, line by        #
+#    line, until it finds a match to the supplied string. #
+#    It will then replace it with the new given string.   #
+###########################################################
+
+
+import glob
+import os
+import fileinput
+
+
+# Get input from user on directory and file extension
+directory = raw_input("Please specify the directory: ")
+filetype = raw_input("What type of file extension are you looking for?: ")
+
+# Fix file type name (Since people don't usually remember the asterisk)
+filetype = "*." + filetype
+
+
+# Function used to search for files
+def searchFiles():
+    output = "\nHere are the available files: \n"
+    output_f = ""
+    
+    # Change directory to user's input and then search through files ending in user's filetype
+    os.chdir(directory)
+    for files in glob.glob(filetype):
+        output_f += files + "\n"
+    
+    if (len(output_f) != 0):    # If there was at least one file (length is not zero)
+        print output + output_f
+    else:   # Print that there aren't any files
+        print "\nSorry, there were no files that matched your criteria."
+        
+        
+# Function used to replace lines in a specific file (based on user's input)
+def fixFiles():
+    
+    # Prompt user
+    select_file = raw_input("\nWhich file do you want to edit (include extension)?: ")
+    current = raw_input("What line do you want to replace?: ")
+    replace = raw_input("What would you like to replace it with?: ")
+    
+    # Use file user specified, go through looking for where to replace
+    for line in fileinput.input(select_file, inplace = 1):
+        # Replace with appropriate text
+        print line.replace(current, replace),
+
+
+# Call method to search for files
+searchFiles()
+
+
+# Ask if user wants to find/replace things from one of the files
+answer = raw_input("Would you like to edit one of these files? (Y/N): ")
+
+
+# If answer is Yes, then call fixFiles
+if (answer.lower() == "y" or answer.lower() == "yes"):
+    fixFiles()
+    print "\nThe file has been modified."
+else:
+    print "\nThank you for your time." # Nice ending message in case they don't want to replace anything :)
+        
